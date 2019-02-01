@@ -1,8 +1,8 @@
 import RPi.GPIO as GPIO
 import time
 
-//Initialisation de notre GPIO 17 pour recevoir un signal
-//Contrairement à nos LEDs avec lesquelles on envoyait un signal
+# Initialisation de notre GPIO 17 pour recevoir un signal
+# Contrairement à nos LEDs avec lesquelles on envoyait un signal
 broche = 17
 GPIO.setmode(GPIO.BCM)
 GPIO.setwarnings(False)
