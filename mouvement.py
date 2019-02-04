@@ -30,5 +30,5 @@ while True:
     elif currentstate == 0 and previousstate == 1:
         print("    Prêt")
         previousstate = 0
-    # On attends 10ms
+    # On attends 10m
     time.sleep(0.01)
