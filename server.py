@@ -38,7 +38,8 @@ def message_loop():
             GPIO.output(22, GPIO.LOW)
             previousstate = 1
         elif currentstate == 0 and previousstate == 1:
-            print("    Prêt")
+            message = 'Ready to move'
+            socketio.emit('alert', message, Broadcast=True)
             previousstate = 0
         time.sleep(0.01)
 
@@ -46,7 +47,7 @@ def temp_loop():
     temp_c = 0
     while True:
         temp_c = capteur.read_temp()
-        socketio.emit('alert', temp_c, Broadcast=True)
+        socketio.emit('temp', temp_c, Broadcast=True)
         time.sleep(1)
 
 

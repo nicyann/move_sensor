@@ -1,3 +1,4 @@
+import os
 import time
 class TemperatureSensor:
     def __init__(self, numero):
