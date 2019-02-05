@@ -13,4 +13,8 @@ $(function () {
     	$('#status').text('Connecté');
         $('#content').append(data + "<br />");
 	});
+    socket.on('temp', function (data) {
+        $('#status').text('Connecté');
+        $('#temp').text(data);
+    });
 });
