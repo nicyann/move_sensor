@@ -4,6 +4,8 @@ from flask import render_template
 import time
 import threading
 import RPi.GPIO as GPIO
+from temperatureSensor import TemperatureSensor
+capteur = TemperatureSensor('28-030197794f4d')
 
 broche = 17
 GPIO.setmode(GPIO.BCM)
@@ -11,6 +13,7 @@ GPIO.setwarnings(False)
 GPIO.setup(broche, GPIO.IN)
 GPIO.setup(18, GPIO.OUT)
 GPIO.setup(22, GPIO.OUT)
+
 
 app = Flask(__name__)
 socketio = SocketIO(app)
@@ -35,10 +38,17 @@ def message_loop():
             GPIO.output(22, GPIO.LOW)
             previousstate = 1
         elif currentstate == 0 and previousstate == 1:
-            message = 'Ready to move'
-            socketio.emit('alert', message, Broadcast=True)
+            print("    Prêt")
             previousstate = 0
         time.sleep(0.01)
+
+def temp_loop():
+    temp_c = 0
+    while True:
+        temp_c = capteur.read_temp()
+        socketio.emit('alert', temp_c, Broadcast=True)
+        time.sleep(1)
+
 
 # Vue que notre méthode pour lire nos message est une boucle infinie
 # Elle bloquerait notre serveur. Qui ne pourrait répondre à aucune requête.
@@ -46,3 +56,5 @@ def message_loop():
 # en parallèle du serveur.
 read_messages = threading.Thread(target=message_loop)
 read_messages.start()
+read_messages_temp = threading.Thread(target=temp_loop)
+read_messages_temp.start()
